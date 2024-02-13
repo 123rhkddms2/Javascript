@@ -14,19 +14,19 @@
     <script>
         window.onload = function(){
 
-            // HTML에서 todoList요소, 입력필드요소, 추가버튼요소를 가져온다.
+            // 1. JavaScript로 HTML문서의 요소(todoList요소, 입력필드요소, 추가버튼요소)를 가져온다.
             const todoList  = document.getElementById('todoList');
             const inputTodo = document.getElementById('inputTodo');
             const btnAdd    = document.getElementById('btnAdd');
 
-            // 할일 목록을 저장할 배열을 선언한다.
+            // 2-1. `todos`라는 배열을 선언하여 할일 목록을 저장한다.
             const todos = [];
 
-            // 세션스토리지에서 할일 목록을 가져온다.(세션스토리지 데이터 불러오기)
+            // 2-2. 세션스토리지에서 이전에 저장한 할일 목록을 가져와서 배열로 변환(세션스토리지 데이터 불러오기)
             const sessTodos = sessionStorage.getItem('todos');
             console.log(sessTodos);
 
-            // 세션스토리지에 할일이 저장되어있다면 해당 데이터를 split(쪼개서) 배열로 변환한다.
+            // 3-1. 이전 세션 스토리지 데이터로 화면에 리스트 생성(세션스토리지에 할일이 저장되어있다면 해당 데이터를 split(쪼개서) 배열로 변환하고)
             if(sessTodos != null){
                 const splitTodos = sessTodos.split(',');
 
@@ -35,12 +35,12 @@
                     }
                 }
 
-                // 배열에 있는 각 할일에 대해 `makeTodoList` 함수를 호출하여 화면표시(세션 스토리지 데이터로 리스트 생성)
+                // 3-2. 배열에 있는 각 할일에 대해 `makeTodoList` 함수를 호출하여 화면표시(세션 스토리지 데이터로 리스트 생성)
                 todos.forEach((todo)=>{
                     makeTodoList(todo);
                 });
 
-                // 추가버튼이 클릭되면 할일을 배열에 추가하고 세션스토리지에 저장후 화면표시(추가버튼 클릭)
+                // 4-1. 추가버튼이 클릭되면, 값이 비어있다면 경고창띄운후 종료, 입력된 할일을 배열에 추가하고 (추가버튼 클릭 이벤트 처리)
                 btnAdd.addEventListener('click', function(e){
                     let todoValue = inputTodo.value;
                     if(todoValue == ''){
@@ -48,7 +48,7 @@
                         return;
                     }
 
-                //스토리지 저장
+                // 4-2. 세션스토리지에 저장후 `makeTodoList`함수를 호출하여 새로운 할일을 화면에 표시(스토리지 저장)
                 todos.push(todoValue);
                 sessionStorage.setItem('todos', todos);
 
@@ -57,7 +57,8 @@
                 inputTodo.value='';
             });
 
-            // 할일을 받아와서 리스트 아이템을 생성하고, 삭제 버튼과 함께 화면에 표시하는 함수
+            // `makeTodoList`함수는 받아온 할일을 리스트 아이템으로 생성하고, 삭제 버튼과 함께 화면에 표시한다.
+            //  삭제 버튼을 클릭하면 해당 리스트 아이템을 삭제하고, 배열과 세션 스토리지에서도 해당 할일을 제거합니다.
             function makeTodoList(todo){
                 const listItem = document.createElement('li');
                 listItem.className = 'd-flex list-group-item';
